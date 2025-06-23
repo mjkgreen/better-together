@@ -42,7 +42,7 @@ export default function OrganizerSignUpForm({ onSignUpSuccess }: OrganizerSignUp
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 text-black">
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
           Full Name

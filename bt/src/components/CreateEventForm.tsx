@@ -62,7 +62,7 @@ export default function CreateEventForm({ organizerId }: CreateEventFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 text-black">
       <div>
         <label htmlFor="eventName" className="block text-sm font-medium text-gray-700">
           Event Name
