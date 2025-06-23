@@ -22,11 +22,14 @@ model User {
   email     String   @unique
   linkedinUrl String?
   name      String?
-  role      String?
+  role      String? // e.g. "organizer" or "attendee"
   company   String?
   city      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // The events this user is organizing.
+  organizedEvents Event[] @relation("OrganizedBy")
 
   // The events this user is attending.
   attending EventAttendee[]
@@ -37,12 +40,19 @@ model User {
 
 // Represents an event that people can attend.
 model Event {
-  id        String   @id @default(cuid())
-  name      String
-  date      DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  name         String
+  date         DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   eventDetails String?
+  logoUrl      String?
+  bannerUrl    String?
+  socialLinks  Json? // e.g., { "twitter": "...", "website": "..." }
+
+  // The user who organized this event.
+  organizer   User   @relation("OrganizedBy", fields: [organizerId], references: [id])
+  organizerId String
 
   // A list of all attendees for this event.
   attendees EventAttendee[]

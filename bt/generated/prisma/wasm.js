@@ -138,7 +138,11 @@ exports.Prisma.EventScalarFieldEnum = {
   date: 'date',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  eventDetails: 'eventDetails'
+  eventDetails: 'eventDetails',
+  logoUrl: 'logoUrl',
+  bannerUrl: 'bannerUrl',
+  socialLinks: 'socialLinks',
+  organizerId: 'organizerId'
 };
 
 exports.Prisma.EventAttendeeScalarFieldEnum = {
@@ -155,6 +159,11 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -163,6 +172,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 
 

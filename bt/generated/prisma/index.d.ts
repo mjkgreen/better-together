@@ -1051,10 +1051,12 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    organizedEvents: number
     attending: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizedEvents?: boolean | UserCountOutputTypeCountOrganizedEventsArgs
     attending?: boolean | UserCountOutputTypeCountAttendingArgs
   }
 
@@ -1067,6 +1069,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountOrganizedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EventWhereInput
   }
 
   /**
@@ -1308,6 +1317,7 @@ export namespace Prisma {
     city?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    organizedEvents?: boolean | User$organizedEventsArgs<ExtArgs>
     attending?: boolean | User$attendingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -1350,6 +1360,7 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "linkedinUrl" | "name" | "role" | "company" | "city" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizedEvents?: boolean | User$organizedEventsArgs<ExtArgs>
     attending?: boolean | User$attendingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -1359,6 +1370,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      organizedEvents: Prisma.$EventPayload<ExtArgs>[]
       attending: Prisma.$EventAttendeePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -1765,6 +1777,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    organizedEvents<T extends User$organizedEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$organizedEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attending<T extends User$attendingArgs<ExtArgs> = {}>(args?: Subset<T, User$attendingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2192,6 +2205,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.organizedEvents
+   */
+  export type User$organizedEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
+    orderBy?: EventOrderByWithRelationInput | EventOrderByWithRelationInput[]
+    cursor?: EventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EventScalarFieldEnum | EventScalarFieldEnum[]
+  }
+
+  /**
    * User.attending
    */
   export type User$attendingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2251,6 +2288,9 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     eventDetails: string | null
+    logoUrl: string | null
+    bannerUrl: string | null
+    organizerId: string | null
   }
 
   export type EventMaxAggregateOutputType = {
@@ -2260,6 +2300,9 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     eventDetails: string | null
+    logoUrl: string | null
+    bannerUrl: string | null
+    organizerId: string | null
   }
 
   export type EventCountAggregateOutputType = {
@@ -2269,6 +2312,10 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     eventDetails: number
+    logoUrl: number
+    bannerUrl: number
+    socialLinks: number
+    organizerId: number
     _all: number
   }
 
@@ -2280,6 +2327,9 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     eventDetails?: true
+    logoUrl?: true
+    bannerUrl?: true
+    organizerId?: true
   }
 
   export type EventMaxAggregateInputType = {
@@ -2289,6 +2339,9 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     eventDetails?: true
+    logoUrl?: true
+    bannerUrl?: true
+    organizerId?: true
   }
 
   export type EventCountAggregateInputType = {
@@ -2298,6 +2351,10 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     eventDetails?: true
+    logoUrl?: true
+    bannerUrl?: true
+    socialLinks?: true
+    organizerId?: true
     _all?: true
   }
 
@@ -2380,6 +2437,10 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     eventDetails: string | null
+    logoUrl: string | null
+    bannerUrl: string | null
+    socialLinks: JsonValue | null
+    organizerId: string
     _count: EventCountAggregateOutputType | null
     _min: EventMinAggregateOutputType | null
     _max: EventMaxAggregateOutputType | null
@@ -2406,6 +2467,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     eventDetails?: boolean
+    logoUrl?: boolean
+    bannerUrl?: boolean
+    socialLinks?: boolean
+    organizerId?: boolean
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
     attendees?: boolean | Event$attendeesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
@@ -2417,6 +2483,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     eventDetails?: boolean
+    logoUrl?: boolean
+    bannerUrl?: boolean
+    socialLinks?: boolean
+    organizerId?: boolean
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2426,6 +2497,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     eventDetails?: boolean
+    logoUrl?: boolean
+    bannerUrl?: boolean
+    socialLinks?: boolean
+    organizerId?: boolean
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -2435,19 +2511,29 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     eventDetails?: boolean
+    logoUrl?: boolean
+    bannerUrl?: boolean
+    socialLinks?: boolean
+    organizerId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "createdAt" | "updatedAt" | "eventDetails", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "createdAt" | "updatedAt" | "eventDetails" | "logoUrl" | "bannerUrl" | "socialLinks" | "organizerId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
     attendees?: boolean | Event$attendeesArgs<ExtArgs>
     _count?: boolean | EventCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+  }
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Event"
     objects: {
+      organizer: Prisma.$UserPayload<ExtArgs>
       attendees: Prisma.$EventAttendeePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2457,6 +2543,10 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       eventDetails: string | null
+      logoUrl: string | null
+      bannerUrl: string | null
+      socialLinks: Prisma.JsonValue | null
+      organizerId: string
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -2851,6 +2941,7 @@ export namespace Prisma {
    */
   export interface Prisma__EventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    organizer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     attendees<T extends Event$attendeesArgs<ExtArgs> = {}>(args?: Subset<T, Event$attendeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2887,6 +2978,10 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly updatedAt: FieldRef<"Event", 'DateTime'>
     readonly eventDetails: FieldRef<"Event", 'String'>
+    readonly logoUrl: FieldRef<"Event", 'String'>
+    readonly bannerUrl: FieldRef<"Event", 'String'>
+    readonly socialLinks: FieldRef<"Event", 'Json'>
+    readonly organizerId: FieldRef<"Event", 'String'>
   }
     
 
@@ -3136,6 +3231,10 @@ export namespace Prisma {
      */
     data: EventCreateManyInput | EventCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3206,6 +3305,10 @@ export namespace Prisma {
      * Limit how many Events to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4431,7 +4534,11 @@ export namespace Prisma {
     date: 'date',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    eventDetails: 'eventDetails'
+    eventDetails: 'eventDetails',
+    logoUrl: 'logoUrl',
+    bannerUrl: 'bannerUrl',
+    socialLinks: 'socialLinks',
+    organizerId: 'organizerId'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
@@ -4457,6 +4564,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -4471,6 +4586,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -4507,6 +4631,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -4536,6 +4674,7 @@ export namespace Prisma {
     city?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    organizedEvents?: EventListRelationFilter
     attending?: EventAttendeeListRelationFilter
   }
 
@@ -4549,6 +4688,7 @@ export namespace Prisma {
     city?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    organizedEvents?: EventOrderByRelationAggregateInput
     attending?: EventAttendeeOrderByRelationAggregateInput
   }
 
@@ -4565,6 +4705,7 @@ export namespace Prisma {
     city?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    organizedEvents?: EventListRelationFilter
     attending?: EventAttendeeListRelationFilter
   }, "id" | "email">
 
@@ -4608,6 +4749,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     eventDetails?: StringNullableFilter<"Event"> | string | null
+    logoUrl?: StringNullableFilter<"Event"> | string | null
+    bannerUrl?: StringNullableFilter<"Event"> | string | null
+    socialLinks?: JsonNullableFilter<"Event">
+    organizerId?: StringFilter<"Event"> | string
+    organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     attendees?: EventAttendeeListRelationFilter
   }
 
@@ -4618,6 +4764,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventDetails?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    bannerUrl?: SortOrderInput | SortOrder
+    socialLinks?: SortOrderInput | SortOrder
+    organizerId?: SortOrder
+    organizer?: UserOrderByWithRelationInput
     attendees?: EventAttendeeOrderByRelationAggregateInput
   }
 
@@ -4631,6 +4782,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Event"> | Date | string
     updatedAt?: DateTimeFilter<"Event"> | Date | string
     eventDetails?: StringNullableFilter<"Event"> | string | null
+    logoUrl?: StringNullableFilter<"Event"> | string | null
+    bannerUrl?: StringNullableFilter<"Event"> | string | null
+    socialLinks?: JsonNullableFilter<"Event">
+    organizerId?: StringFilter<"Event"> | string
+    organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     attendees?: EventAttendeeListRelationFilter
   }, "id">
 
@@ -4641,6 +4797,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventDetails?: SortOrderInput | SortOrder
+    logoUrl?: SortOrderInput | SortOrder
+    bannerUrl?: SortOrderInput | SortOrder
+    socialLinks?: SortOrderInput | SortOrder
+    organizerId?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
     _min?: EventMinOrderByAggregateInput
@@ -4656,6 +4816,10 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     eventDetails?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    logoUrl?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    bannerUrl?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    socialLinks?: JsonNullableWithAggregatesFilter<"Event">
+    organizerId?: StringWithAggregatesFilter<"Event"> | string
   }
 
   export type EventAttendeeWhereInput = {
@@ -4732,6 +4896,7 @@ export namespace Prisma {
     city?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
     attending?: EventAttendeeCreateNestedManyWithoutUserInput
   }
 
@@ -4745,6 +4910,7 @@ export namespace Prisma {
     city?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
     attending?: EventAttendeeUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -4758,6 +4924,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
     attending?: EventAttendeeUpdateManyWithoutUserNestedInput
   }
 
@@ -4771,6 +4938,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
     attending?: EventAttendeeUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -4817,6 +4985,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizer: UserCreateNestedOneWithoutOrganizedEventsInput
     attendees?: EventAttendeeCreateNestedManyWithoutEventInput
   }
 
@@ -4827,6 +4999,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizerId: string
     attendees?: EventAttendeeUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -4837,6 +5013,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizer?: UserUpdateOneRequiredWithoutOrganizedEventsNestedInput
     attendees?: EventAttendeeUpdateManyWithoutEventNestedInput
   }
 
@@ -4847,6 +5027,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizerId?: StringFieldUpdateOperationsInput | string
     attendees?: EventAttendeeUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -4857,6 +5041,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizerId: string
   }
 
   export type EventUpdateManyMutationInput = {
@@ -4866,6 +5054,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -4875,6 +5066,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizerId?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventAttendeeCreateInput = {
@@ -4979,6 +5174,12 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type EventListRelationFilter = {
+    every?: EventWhereInput
+    some?: EventWhereInput
+    none?: EventWhereInput
+  }
+
   export type EventAttendeeListRelationFilter = {
     every?: EventAttendeeWhereInput
     some?: EventAttendeeWhereInput
@@ -4988,6 +5189,10 @@ export namespace Prisma {
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
+  }
+
+  export type EventOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type EventAttendeeOrderByRelationAggregateInput = {
@@ -5079,6 +5284,34 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
 
   export type EventCountOrderByAggregateInput = {
     id?: SortOrder
@@ -5087,6 +5320,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventDetails?: SortOrder
+    logoUrl?: SortOrder
+    bannerUrl?: SortOrder
+    socialLinks?: SortOrder
+    organizerId?: SortOrder
   }
 
   export type EventMaxOrderByAggregateInput = {
@@ -5096,6 +5333,9 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventDetails?: SortOrder
+    logoUrl?: SortOrder
+    bannerUrl?: SortOrder
+    organizerId?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
@@ -5105,11 +5345,35 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     eventDetails?: SortOrder
+    logoUrl?: SortOrder
+    bannerUrl?: SortOrder
+    organizerId?: SortOrder
   }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EventScalarRelationFilter = {
@@ -5149,11 +5413,25 @@ export namespace Prisma {
     keywords?: SortOrder
   }
 
+  export type EventCreateNestedManyWithoutOrganizerInput = {
+    create?: XOR<EventCreateWithoutOrganizerInput, EventUncheckedCreateWithoutOrganizerInput> | EventCreateWithoutOrganizerInput[] | EventUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizerInput | EventCreateOrConnectWithoutOrganizerInput[]
+    createMany?: EventCreateManyOrganizerInputEnvelope
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+  }
+
   export type EventAttendeeCreateNestedManyWithoutUserInput = {
     create?: XOR<EventAttendeeCreateWithoutUserInput, EventAttendeeUncheckedCreateWithoutUserInput> | EventAttendeeCreateWithoutUserInput[] | EventAttendeeUncheckedCreateWithoutUserInput[]
     connectOrCreate?: EventAttendeeCreateOrConnectWithoutUserInput | EventAttendeeCreateOrConnectWithoutUserInput[]
     createMany?: EventAttendeeCreateManyUserInputEnvelope
     connect?: EventAttendeeWhereUniqueInput | EventAttendeeWhereUniqueInput[]
+  }
+
+  export type EventUncheckedCreateNestedManyWithoutOrganizerInput = {
+    create?: XOR<EventCreateWithoutOrganizerInput, EventUncheckedCreateWithoutOrganizerInput> | EventCreateWithoutOrganizerInput[] | EventUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizerInput | EventCreateOrConnectWithoutOrganizerInput[]
+    createMany?: EventCreateManyOrganizerInputEnvelope
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
   }
 
   export type EventAttendeeUncheckedCreateNestedManyWithoutUserInput = {
@@ -5175,6 +5453,20 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type EventUpdateManyWithoutOrganizerNestedInput = {
+    create?: XOR<EventCreateWithoutOrganizerInput, EventUncheckedCreateWithoutOrganizerInput> | EventCreateWithoutOrganizerInput[] | EventUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizerInput | EventCreateOrConnectWithoutOrganizerInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutOrganizerInput | EventUpsertWithWhereUniqueWithoutOrganizerInput[]
+    createMany?: EventCreateManyOrganizerInputEnvelope
+    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    update?: EventUpdateWithWhereUniqueWithoutOrganizerInput | EventUpdateWithWhereUniqueWithoutOrganizerInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutOrganizerInput | EventUpdateManyWithWhereWithoutOrganizerInput[]
+    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
+  }
+
   export type EventAttendeeUpdateManyWithoutUserNestedInput = {
     create?: XOR<EventAttendeeCreateWithoutUserInput, EventAttendeeUncheckedCreateWithoutUserInput> | EventAttendeeCreateWithoutUserInput[] | EventAttendeeUncheckedCreateWithoutUserInput[]
     connectOrCreate?: EventAttendeeCreateOrConnectWithoutUserInput | EventAttendeeCreateOrConnectWithoutUserInput[]
@@ -5187,6 +5479,20 @@ export namespace Prisma {
     update?: EventAttendeeUpdateWithWhereUniqueWithoutUserInput | EventAttendeeUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: EventAttendeeUpdateManyWithWhereWithoutUserInput | EventAttendeeUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: EventAttendeeScalarWhereInput | EventAttendeeScalarWhereInput[]
+  }
+
+  export type EventUncheckedUpdateManyWithoutOrganizerNestedInput = {
+    create?: XOR<EventCreateWithoutOrganizerInput, EventUncheckedCreateWithoutOrganizerInput> | EventCreateWithoutOrganizerInput[] | EventUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: EventCreateOrConnectWithoutOrganizerInput | EventCreateOrConnectWithoutOrganizerInput[]
+    upsert?: EventUpsertWithWhereUniqueWithoutOrganizerInput | EventUpsertWithWhereUniqueWithoutOrganizerInput[]
+    createMany?: EventCreateManyOrganizerInputEnvelope
+    set?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    disconnect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    delete?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    connect?: EventWhereUniqueInput | EventWhereUniqueInput[]
+    update?: EventUpdateWithWhereUniqueWithoutOrganizerInput | EventUpdateWithWhereUniqueWithoutOrganizerInput[]
+    updateMany?: EventUpdateManyWithWhereWithoutOrganizerInput | EventUpdateManyWithWhereWithoutOrganizerInput[]
+    deleteMany?: EventScalarWhereInput | EventScalarWhereInput[]
   }
 
   export type EventAttendeeUncheckedUpdateManyWithoutUserNestedInput = {
@@ -5203,6 +5509,12 @@ export namespace Prisma {
     deleteMany?: EventAttendeeScalarWhereInput | EventAttendeeScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutOrganizedEventsInput = {
+    create?: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizedEventsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type EventAttendeeCreateNestedManyWithoutEventInput = {
     create?: XOR<EventAttendeeCreateWithoutEventInput, EventAttendeeUncheckedCreateWithoutEventInput> | EventAttendeeCreateWithoutEventInput[] | EventAttendeeUncheckedCreateWithoutEventInput[]
     connectOrCreate?: EventAttendeeCreateOrConnectWithoutEventInput | EventAttendeeCreateOrConnectWithoutEventInput[]
@@ -5215,6 +5527,14 @@ export namespace Prisma {
     connectOrCreate?: EventAttendeeCreateOrConnectWithoutEventInput | EventAttendeeCreateOrConnectWithoutEventInput[]
     createMany?: EventAttendeeCreateManyEventInputEnvelope
     connect?: EventAttendeeWhereUniqueInput | EventAttendeeWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutOrganizedEventsNestedInput = {
+    create?: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizedEventsInput
+    upsert?: UserUpsertWithoutOrganizedEventsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganizedEventsInput, UserUpdateWithoutOrganizedEventsInput>, UserUncheckedUpdateWithoutOrganizedEventsInput>
   }
 
   export type EventAttendeeUpdateManyWithoutEventNestedInput = {
@@ -5381,6 +5701,65 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type EventCreateWithoutOrganizerInput = {
+    id?: string
+    name: string
+    date: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    attendees?: EventAttendeeCreateNestedManyWithoutEventInput
+  }
+
+  export type EventUncheckedCreateWithoutOrganizerInput = {
+    id?: string
+    name: string
+    date: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    attendees?: EventAttendeeUncheckedCreateNestedManyWithoutEventInput
+  }
+
+  export type EventCreateOrConnectWithoutOrganizerInput = {
+    where: EventWhereUniqueInput
+    create: XOR<EventCreateWithoutOrganizerInput, EventUncheckedCreateWithoutOrganizerInput>
+  }
+
+  export type EventCreateManyOrganizerInputEnvelope = {
+    data: EventCreateManyOrganizerInput | EventCreateManyOrganizerInput[]
+    skipDuplicates?: boolean
+  }
 
   export type EventAttendeeCreateWithoutUserInput = {
     id?: string
@@ -5406,6 +5785,38 @@ export namespace Prisma {
   export type EventAttendeeCreateManyUserInputEnvelope = {
     data: EventAttendeeCreateManyUserInput | EventAttendeeCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type EventUpsertWithWhereUniqueWithoutOrganizerInput = {
+    where: EventWhereUniqueInput
+    update: XOR<EventUpdateWithoutOrganizerInput, EventUncheckedUpdateWithoutOrganizerInput>
+    create: XOR<EventCreateWithoutOrganizerInput, EventUncheckedCreateWithoutOrganizerInput>
+  }
+
+  export type EventUpdateWithWhereUniqueWithoutOrganizerInput = {
+    where: EventWhereUniqueInput
+    data: XOR<EventUpdateWithoutOrganizerInput, EventUncheckedUpdateWithoutOrganizerInput>
+  }
+
+  export type EventUpdateManyWithWhereWithoutOrganizerInput = {
+    where: EventScalarWhereInput
+    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyWithoutOrganizerInput>
+  }
+
+  export type EventScalarWhereInput = {
+    AND?: EventScalarWhereInput | EventScalarWhereInput[]
+    OR?: EventScalarWhereInput[]
+    NOT?: EventScalarWhereInput | EventScalarWhereInput[]
+    id?: StringFilter<"Event"> | string
+    name?: StringFilter<"Event"> | string
+    date?: DateTimeFilter<"Event"> | Date | string
+    createdAt?: DateTimeFilter<"Event"> | Date | string
+    updatedAt?: DateTimeFilter<"Event"> | Date | string
+    eventDetails?: StringNullableFilter<"Event"> | string | null
+    logoUrl?: StringNullableFilter<"Event"> | string | null
+    bannerUrl?: StringNullableFilter<"Event"> | string | null
+    socialLinks?: JsonNullableFilter<"Event">
+    organizerId?: StringFilter<"Event"> | string
   }
 
   export type EventAttendeeUpsertWithWhereUniqueWithoutUserInput = {
@@ -5436,6 +5847,37 @@ export namespace Prisma {
     keywords?: StringNullableFilter<"EventAttendee"> | string | null
   }
 
+  export type UserCreateWithoutOrganizedEventsInput = {
+    id?: string
+    email: string
+    linkedinUrl?: string | null
+    name?: string | null
+    role?: string | null
+    company?: string | null
+    city?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    attending?: EventAttendeeCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutOrganizedEventsInput = {
+    id?: string
+    email: string
+    linkedinUrl?: string | null
+    name?: string | null
+    role?: string | null
+    company?: string | null
+    city?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    attending?: EventAttendeeUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutOrganizedEventsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
+  }
+
   export type EventAttendeeCreateWithoutEventInput = {
     id?: string
     goals?: string | null
@@ -5460,6 +5902,43 @@ export namespace Prisma {
   export type EventAttendeeCreateManyEventInputEnvelope = {
     data: EventAttendeeCreateManyEventInput | EventAttendeeCreateManyEventInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutOrganizedEventsInput = {
+    update: XOR<UserUpdateWithoutOrganizedEventsInput, UserUncheckedUpdateWithoutOrganizedEventsInput>
+    create: XOR<UserCreateWithoutOrganizedEventsInput, UserUncheckedCreateWithoutOrganizedEventsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutOrganizedEventsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOrganizedEventsInput, UserUncheckedUpdateWithoutOrganizedEventsInput>
+  }
+
+  export type UserUpdateWithoutOrganizedEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attending?: EventAttendeeUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrganizedEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: NullableStringFieldUpdateOperationsInput | string | null
+    company?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attending?: EventAttendeeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EventAttendeeUpsertWithWhereUniqueWithoutEventInput = {
@@ -5488,6 +5967,7 @@ export namespace Prisma {
     city?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizedEvents?: EventCreateNestedManyWithoutOrganizerInput
   }
 
   export type UserUncheckedCreateWithoutAttendingInput = {
@@ -5500,6 +5980,7 @@ export namespace Prisma {
     city?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    organizedEvents?: EventUncheckedCreateNestedManyWithoutOrganizerInput
   }
 
   export type UserCreateOrConnectWithoutAttendingInput = {
@@ -5514,6 +5995,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizer: UserCreateNestedOneWithoutOrganizedEventsInput
   }
 
   export type EventUncheckedCreateWithoutAttendeesInput = {
@@ -5523,6 +6008,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizerId: string
   }
 
   export type EventCreateOrConnectWithoutAttendeesInput = {
@@ -5551,6 +6040,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizedEvents?: EventUpdateManyWithoutOrganizerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAttendingInput = {
@@ -5563,6 +6053,7 @@ export namespace Prisma {
     city?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizedEvents?: EventUncheckedUpdateManyWithoutOrganizerNestedInput
   }
 
   export type EventUpsertWithoutAttendeesInput = {
@@ -5583,6 +6074,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizer?: UserUpdateOneRequiredWithoutOrganizedEventsNestedInput
   }
 
   export type EventUncheckedUpdateWithoutAttendeesInput = {
@@ -5592,6 +6087,22 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    organizerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type EventCreateManyOrganizerInput = {
+    id?: string
+    name: string
+    date: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    eventDetails?: string | null
+    logoUrl?: string | null
+    bannerUrl?: string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type EventAttendeeCreateManyUserInput = {
@@ -5600,6 +6111,44 @@ export namespace Prisma {
     goals?: string | null
     priority?: string | null
     keywords?: string | null
+  }
+
+  export type EventUpdateWithoutOrganizerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    attendees?: EventAttendeeUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateWithoutOrganizerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    attendees?: EventAttendeeUncheckedUpdateManyWithoutEventNestedInput
+  }
+
+  export type EventUncheckedUpdateManyWithoutOrganizerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    eventDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
   }
 
   export type EventAttendeeUpdateWithoutUserInput = {

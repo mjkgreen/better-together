@@ -23,17 +23,20 @@ model User {
   email       String   @unique
   linkedinUrl String?
   name        String?
-  role        String?
+  role        String? // e.g. "organizer" or "attendee"
   company     String?
   city        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // The events this user is organizing.
+  organizedEvents Event[] @relation("OrganizedBy")
+
   // The events this user is attending.
   attending EventAttendee[]
 
   // The contacts this user has saved to their "rolodex".
-  contacts Contact[]
+  // contacts Contact[]
 }
 
 // Represents an event that people can attend.
@@ -44,6 +47,13 @@ model Event {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   eventDetails String?
+  logoUrl      String?
+  bannerUrl    String?
+  socialLinks  Json? // e.g., { "twitter": "...", "website": "..." }
+
+  // The user who organized this event.
+  organizer   User   @relation("OrganizedBy", fields: [organizerId], references: [id])
+  organizerId String
 
   // A list of all attendees for this event.
   attendees EventAttendee[]
@@ -67,37 +77,32 @@ model EventAttendee {
 
 // A contact in a user's personal "rolodex".
 // This is created when a user wants to save a person they've met or been matched with.
-model Contact {
-  id String @id @default(cuid())
-
-  // The user who owns this contact entry.
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String
-
-  // The person who is the contact. For the MVP, we can store their info as a JSON
-  // object to keep it simple, as they might not be a `User` in our system yet.
-  // Example: { "name": "Sarah", "role": "CEO", "company": "Climate Corp" }
-  contactInfoJson String
-
-  // The event where they met.
-  eventId String
-
-  // User's private notes on the conversation.
-  notes String?
-
-  // AI-generated follow-up messages for this contact.
-  followUps FollowUp[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// An AI-generated follow-up message for a specific contact.
-model FollowUp {
-  id               String   @id @default(cuid())
-  contact          Contact  @relation(fields: [contactId], references: [id])
-  contactId        String
-  generatedMessage String
-  status           String   @default("draft") // e.g., "draft", "sent"
-  createdAt        DateTime @default(now())
-}
+/**
+ * model Contact {
+ * id        String   @id @default(cuid())
+ * // The user who owns this contact entry.
+ * owner     User     @relation(fields: [ownerId], references: [id])
+ * ownerId   String
+ * // The person who is the contact. For the MVP, we can store their info as a JSON
+ * // object to keep it simple, as they might not be a `User` in our system yet.
+ * // Example: { "name": "Sarah", "role": "CEO", "company": "Climate Corp" }
+ * contactInfoJson String
+ * // The event where they met.
+ * eventId   String
+ * // User's private notes on the conversation.
+ * notes     String?
+ * // AI-generated follow-up messages for this contact.
+ * followUps FollowUp[]
+ * createdAt DateTime @default(now())
+ * updatedAt DateTime @updatedAt
+ * }
+ * // An AI-generated follow-up message for a specific contact.
+ * model FollowUp {
+ * id               String   @id @default(cuid())
+ * contact          Contact  @relation(fields: [contactId], references: [id])
+ * contactId        String
+ * generatedMessage String
+ * status           String   @default("draft") // e.g., "draft", "sent"
+ * createdAt        DateTime @default(now())
+ * }
+ */

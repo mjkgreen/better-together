@@ -11,16 +11,6 @@ async function main() {
     await prisma.event.deleteMany({});
     console.log('Cleared previous data.');
 
-    // Create an Event
-    const event = await prisma.event.create({
-        data: {
-            name: 'AI in Biotech Summit',
-            date: new Date('2025-10-22T09:00:00Z'),
-            eventDetails: 'A summit for professionals in AI and Biotechnology to connect and innovate.',
-        },
-    });
-    console.log(`Created event: ${event.name}`);
-
     // Create Users
     const usersData = [
         {
@@ -92,6 +82,21 @@ async function main() {
         createdUsers.push(user);
         console.log(`Created user: ${user.name}`);
     }
+
+    // Create an Event
+    const event = await prisma.event.create({
+        data: {
+            name: 'AI in Biotech Summit',
+            date: new Date('2025-10-22T09:00:00Z'),
+            eventDetails: 'A summit for professionals in AI and Biotechnology to connect and innovate.',
+            organizer: {
+                connect: {
+                    id: createdUsers[0].id, // Alice
+                },
+            },
+        },
+    });
+    console.log(`Created event: ${event.name}`);
 
     // Create Event Attendees
     const attendeesData = [
