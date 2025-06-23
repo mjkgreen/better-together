@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import CopyLinkButton from "@/components/CopyLinkButton";
 
 interface EventPageProps {
   params: {
@@ -47,7 +48,10 @@ const EventPage = async ({ params }: EventPageProps) => {
               </div>
             )}
             <div className="flex-grow">
-              <h1 className="text-4xl font-bold text-gray-900">{event.name}</h1>
+              <div className="flex items-center">
+                <h1 className="text-4xl font-bold text-gray-900">{event.name}</h1>
+                <CopyLinkButton />
+              </div>
               <p className="text-lg text-gray-500 mt-1">Organized by {event.organizer.name}</p>
               <p className="text-md text-gray-600 mt-2">
                 {new Date(event.date).toLocaleDateString("en-US", {

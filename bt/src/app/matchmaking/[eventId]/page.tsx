@@ -1,6 +1,9 @@
+"use client";
+
+import { useSearchParams, notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 import Matchmaker from "@/components/Matchmaker";
-import prisma from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import { Event, User } from "../../../../generated/prisma/client";
 
 interface MatchmakingPageProps {
   params: {
@@ -8,27 +11,45 @@ interface MatchmakingPageProps {
   };
 }
 
-const MatchmakingPage = async ({ params }: MatchmakingPageProps) => {
+const MatchmakingPage = ({ params }: MatchmakingPageProps) => {
   const { eventId } = params;
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
 
-  const event = await prisma.event.findUnique({
-    where: { id: eventId },
-  });
+  const [event, setEvent] = useState<Event | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!event) {
-    notFound();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!userId) return;
+      try {
+        // Fetch event and user details in parallel
+        const [eventRes, userRes] = await Promise.all([fetch(`/api/events/${eventId}`), fetch(`/api/users/${userId}`)]);
+
+        if (!eventRes.ok) throw new Error("Event not found");
+        if (!userRes.ok) throw new Error("User not found");
+
+        const eventData = await eventRes.json();
+        const userData = await userRes.json();
+
+        setEvent(eventData);
+        setUser(userData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [eventId, userId]);
+
+  if (loading) {
+    return <div>Loading matches...</div>;
   }
 
-  // For the MVP, we are using a hardcoded user (Bob) who we just registered.
-  // In a real app, you'd get the logged-in user's ID.
-  const user = await prisma.user.findFirst({
-    where: { email: "bob@example.com" },
-  });
-
-  if (!user) {
-    // This case should ideally not be hit if the seed script has been run
-    // and the user was registered on the previous page.
-    return <div>Current user not found.</div>;
+  if (!event || !user) {
+    notFound();
   }
 
   return (

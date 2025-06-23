@@ -42,7 +42,7 @@ export default function AttendeeRegisterForm({ eventId, userId }: AttendeeRegist
       }
 
       // Redirect to the matchmaking page for this event
-      router.push(`/matchmaking/${eventId}`);
+      router.push(`/matchmaking/${eventId}?userId=${userId}`);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -51,7 +51,7 @@ export default function AttendeeRegisterForm({ eventId, userId }: AttendeeRegist
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8 text-black">
       <div className="space-y-4">
         <div>
           <label htmlFor="goals" className="block text-sm font-medium text-gray-700">
