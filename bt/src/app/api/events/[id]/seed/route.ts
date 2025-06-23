@@ -24,7 +24,13 @@ export async function POST(
         });
 
         // Check if any of our demo users are already attendees
-        const demoEmails = ["liam.smith@example.com", "olivia.jones@example.com", "noah.garcia@example.com"];
+        const demoEmails = [
+            "liam.smith@example.com",
+            "olivia.jones@example.com",
+            "noah.garcia@example.com",
+            "emma.miller@example.com",
+            "oliver.davis@example.com"
+        ];
         const hasDemo = existingAttendees.some(attendee =>
             demoEmails.includes(attendee.user.email)
         );
@@ -39,6 +45,7 @@ export async function POST(
         // Create seed users if they don't exist
         const firstNames = ["Liam", "Olivia", "Noah", "Emma", "Oliver", "Ava", "Elijah", "Charlotte", "William", "Sophia", "James", "Amelia", "Benjamin", "Isabella", "Lucas", "Mia", "Henry", "Evelyn", "Alexander", "Harper"];
         const lastNames = ["Smith", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson"];
+        const emailDomains = ["gmail.com", "outlook.com", "company.bio", "startup.ai", "research.org", "biotech.com", "university.edu", "lab.net", "pharma.co", "medtech.io", "genomics.ai", "cure.org", "example.com", "health.tech", "bio.ventures"];
         const roles = ["Data Scientist", "Bioinformatician", "Machine Learning Engineer", "Research Scientist", "Lab Director", "Sales Executive", "Marketing Manager", "Founder", "CTO", "CPO", "Medical Doctor", "Clinical Researcher", "Regulatory Affairs Specialist", "Computational Biologist", "Venture Analyst"];
         const companies = ["SynthoGen", "QuantumLeap Bio", "GeneWeavers", "BioTelligence", "AI-Cure", "Data-Driven Diagnostics", "NanoBio", "Precision Med", "Helix AI", "Vitality Labs", "CureConnect", "Genomica", "NeuroLink", "CardioAI", "Onco-Solutions"];
         const cities = ["San Diego", "Cambridge", "Raleigh", "Zurich", "London", "Toronto", "Seattle", "Austin", "Berlin", "Singapore"];
@@ -95,9 +102,10 @@ export async function POST(
         for (let i = 0; i < 20; i++) {
             const firstName = firstNames[i];
             const lastName = lastNames[i];
+            const emailDomain = emailDomains[i % emailDomains.length];
 
             const userData = {
-                email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`,
+                email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${emailDomain}`,
                 name: `${firstName} ${lastName}`,
                 role: roles[i % roles.length],
                 company: companies[i % companies.length],

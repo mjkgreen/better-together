@@ -79,7 +79,17 @@ export async function POST(req: NextRequest) {
             prompt: `Here is my profile: ${JSON.stringify(userProfileForPrompt)}. Here are the other attendees: ${JSON.stringify(attendeesForPrompt)}. Please find the best matches for me.`
         });
 
-        return NextResponse.json(object);
+        // Enhance the matches with email addresses and user IDs
+        const enhancedMatches = object.matches.map(match => {
+            const attendee = otherAttendees.find(a => a.user.name === match.name);
+            return {
+                ...match,
+                email: attendee?.user.email || '',
+                userId: attendee?.user.id || '',
+            };
+        });
+
+        return NextResponse.json({ matches: enhancedMatches });
 
     } catch (error) {
         console.error('Error in match agent:', error);

@@ -14,12 +14,15 @@ interface Match {
   company?: string;
   reason: string;
   matchScore: number;
+  email?: string;
+  userId?: string;
 }
 
 export default function Matchmaker({ user, event }: MatchmakerProps) {
   const [matches, setMatches] = useState<Match[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true); // Start loading immediately
   const [error, setError] = useState<string | null>(null);
+  const [generatingIntro, setGeneratingIntro] = useState<string | null>(null); // Track which intro is being generated
 
   useEffect(() => {
     const findMatches = async () => {
@@ -66,6 +69,152 @@ export default function Matchmaker({ user, event }: MatchmakerProps) {
       .toUpperCase()
       .slice(0, 2);
   };
+
+  const generateIntro = async (match: Match) => {
+    if (!match.email) {
+      setError(`No email address available for ${match.name}. Please try refreshing the matches.`);
+      return;
+    }
+
+    setGeneratingIntro(match.name);
+    try {
+      const response = await fetch("/api/intro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          eventId: event.id,
+          matchName: match.name,
+          matchRole: match.role,
+          matchCompany: match.company,
+          reason: match.reason,
+          matchEmail: match.email,
+        }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.details || "Failed to generate intro.");
+      }
+
+      const data = await response.json();
+
+      // Open the mailto link
+      window.location.href = data.mailtoLink;
+    } catch (e: any) {
+      setError(`Failed to generate intro: ${e.message}`);
+    } finally {
+      setGeneratingIntro(null);
+    }
+  };
+
+  const generateAllIntros = async () => {
+    if (matches.length === 0) return;
+
+    // Check if all matches have email addresses
+    const matchesWithoutEmail = matches.filter((match) => !match.email);
+    if (matchesWithoutEmail.length > 0) {
+      setError(
+        `Missing email addresses for: ${matchesWithoutEmail.map((m) => m.name).join(", ")}. Please refresh the matches.`
+      );
+      return;
+    }
+
+    setGeneratingIntro("all");
+    try {
+      // Generate intros for all matches
+      const introPromises = matches.map(async (match) => {
+        const response = await fetch("/api/intro", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id,
+            eventId: event.id,
+            matchName: match.name,
+            matchRole: match.role,
+            matchCompany: match.company,
+            reason: match.reason,
+            matchEmail: match.email,
+          }),
+        });
+
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(`Failed to generate intro for ${match.name}: ${err.details}`);
+        }
+
+        const data = await response.json();
+        return `${match.name}: ${data.body}`;
+      });
+
+      const allIntros = await Promise.all(introPromises);
+
+      // Create a combined email with all intros
+      const subject = `Following up from ${event.name}`;
+      const body = `Hi everyone!
+
+Great meeting you all at ${event.name}! Here are some personalized follow-ups:
+
+${allIntros.map((intro, index) => `${index + 1}. ${intro}`).join("\n\n")}
+
+Looking forward to connecting!
+
+Best,
+${user.name || "Your name"}`;
+
+      const emailBody = encodeURIComponent(body);
+      const emailSubject = encodeURIComponent(subject);
+      const mailtoLink = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+
+      // Open the mailto link
+      window.location.href = mailtoLink;
+    } catch (e: any) {
+      setError(`Failed to generate intros: ${e.message}`);
+    } finally {
+      setGeneratingIntro(null);
+    }
+  };
+
+  // Reusable Generate Intro Button Component
+  const GenerateIntroButton = ({ match }: { match: Match }) => (
+    <button
+      className="flex-1 border-2 font-bold py-3 px-4 rounded-2xl transition-all duration-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+      style={{
+        borderColor: event.primaryColor || "#4F46E5",
+        color: event.primaryColor || "#4F46E5",
+      }}
+      onMouseEnter={(e) => {
+        if (!e.currentTarget.disabled) {
+          e.currentTarget.style.backgroundColor = event.primaryColor || "#4F46E5";
+          e.currentTarget.style.color = "white";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!e.currentTarget.disabled) {
+          e.currentTarget.style.backgroundColor = "transparent";
+          e.currentTarget.style.color = event.primaryColor || "#4F46E5";
+        }
+      }}
+      onClick={() => generateIntro(match)}
+      disabled={generatingIntro === match.name}
+    >
+      {generatingIntro === match.name ? (
+        <>
+          <svg className="w-4 h-4 inline mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Generating...
+        </>
+      ) : (
+        "Generate Intro"
+      )}
+    </button>
+  );
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -311,23 +460,7 @@ export default function Matchmaker({ user, event }: MatchmakerProps) {
                       >
                         Add to Contacts
                       </button>
-                      <button
-                        className="flex-1 border-2 font-bold py-3 px-4 rounded-2xl transition-all duration-200 text-sm"
-                        style={{
-                          borderColor: event.primaryColor || "#4F46E5",
-                          color: event.primaryColor || "#4F46E5",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = event.primaryColor || "#4F46E5";
-                          e.currentTarget.style.color = "white";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "transparent";
-                          e.currentTarget.style.color = event.primaryColor || "#4F46E5";
-                        }}
-                      >
-                        Generate Intro
-                      </button>
+                      <GenerateIntroButton match={match} />
                     </div>
                   </div>
                 ))}
@@ -425,23 +558,7 @@ export default function Matchmaker({ user, event }: MatchmakerProps) {
                         >
                           Add to Contacts
                         </button>
-                        <button
-                          className="flex-1 border-2 font-bold py-3 px-4 rounded-2xl transition-all duration-200 text-sm"
-                          style={{
-                            borderColor: event.primaryColor || "#4F46E5",
-                            color: event.primaryColor || "#4F46E5",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = event.primaryColor || "#4F46E5";
-                            e.currentTarget.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = "transparent";
-                            e.currentTarget.style.color = event.primaryColor || "#4F46E5";
-                          }}
-                        >
-                          Generate Intro
-                        </button>
+                        <GenerateIntroButton match={match} />
                       </div>
                     </div>
                   ))}
@@ -536,23 +653,7 @@ export default function Matchmaker({ user, event }: MatchmakerProps) {
                         >
                           Add to Contacts
                         </button>
-                        <button
-                          className="flex-1 border-2 font-bold py-3 px-4 rounded-2xl transition-all duration-200 text-sm"
-                          style={{
-                            borderColor: event.primaryColor || "#4F46E5",
-                            color: event.primaryColor || "#4F46E5",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = event.primaryColor || "#4F46E5";
-                            e.currentTarget.style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = "transparent";
-                            e.currentTarget.style.color = event.primaryColor || "#4F46E5";
-                          }}
-                        >
-                          Generate Intro
-                        </button>
+                        <GenerateIntroButton match={match} />
                       </div>
                     </div>
                   ))}
@@ -649,23 +750,7 @@ export default function Matchmaker({ user, event }: MatchmakerProps) {
                       >
                         Add to Contacts
                       </button>
-                      <button
-                        className="flex-1 border-2 font-bold py-3 px-4 rounded-2xl transition-all duration-200 text-sm"
-                        style={{
-                          borderColor: event.primaryColor || "#4F46E5",
-                          color: event.primaryColor || "#4F46E5",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = event.primaryColor || "#4F46E5";
-                          e.currentTarget.style.color = "white";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = "transparent";
-                          e.currentTarget.style.color = event.primaryColor || "#4F46E5";
-                        }}
-                      >
-                        Generate Intro
-                      </button>
+                      <GenerateIntroButton match={match} />
                     </div>
                   </div>
                 ))}
@@ -717,29 +802,56 @@ export default function Matchmaker({ user, event }: MatchmakerProps) {
                     Save All to My Rolodex
                   </button>
                   <button
-                    className="border-2 font-bold py-4 px-8 rounded-2xl transition-all duration-200"
+                    className="border-2 font-bold py-4 px-8 rounded-2xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       borderColor: event.primaryColor || "#4F46E5",
                       color: event.primaryColor || "#4F46E5",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = event.primaryColor || "#4F46E5";
-                      e.currentTarget.style.color = "white";
+                      if (!e.currentTarget.disabled) {
+                        e.currentTarget.style.backgroundColor = event.primaryColor || "#4F46E5";
+                        e.currentTarget.style.color = "white";
+                      }
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.color = event.primaryColor || "#4F46E5";
+                      if (!e.currentTarget.disabled) {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.color = event.primaryColor || "#4F46E5";
+                      }
                     }}
+                    onClick={generateAllIntros}
+                    disabled={generatingIntro === "all"}
                   >
-                    <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                      />
-                    </svg>
-                    Generate All Intros
+                    {generatingIntro === "all" ? (
+                      <>
+                        <svg
+                          className="w-5 h-5 inline mr-2 animate-spin"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                          />
+                        </svg>
+                        Generating All...
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                          />
+                        </svg>
+                        Generate All Intros
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
