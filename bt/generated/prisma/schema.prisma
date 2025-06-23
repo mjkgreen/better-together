@@ -41,15 +41,17 @@ model User {
 
 // Represents an event that people can attend.
 model Event {
-  id           String   @id @default(cuid())
-  name         String
-  date         DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  eventDetails String?
-  logoUrl      String?
-  bannerUrl    String?
-  socialLinks  Json? // e.g., { "twitter": "...", "website": "..." }
+  id             String   @id @default(cuid())
+  name           String
+  date           DateTime
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  eventDetails   String?
+  logoUrl        String?
+  bannerUrl      String?
+  socialLinks    Json? // e.g., { "twitter": "...", "website": "..." }
+  primaryColor   String?  @default("#4F46E5") // Default indigo-600
+  secondaryColor String?  @default("#7C3AED") // Default purple-600
 
   // The user who organized this event.
   organizer   User   @relation("OrganizedBy", fields: [organizerId], references: [id])

@@ -15,6 +15,8 @@ export default function CreateEventForm({ organizerId }: CreateEventFormProps) {
   const [bannerUrl, setBannerUrl] = useState("");
   const [twitterUrl, setTwitterUrl] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("#4F46E5"); // Default indigo-600
+  const [secondaryColor, setSecondaryColor] = useState("#7C3AED"); // Default purple-600
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -42,6 +44,8 @@ export default function CreateEventForm({ organizerId }: CreateEventFormProps) {
           logoUrl,
           bannerUrl,
           socialLinks,
+          primaryColor,
+          secondaryColor,
           organizerId,
         }),
       });
@@ -174,6 +178,84 @@ export default function CreateEventForm({ organizerId }: CreateEventFormProps) {
             onChange={(e) => setWebsiteUrl(e.target.value)}
             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
+        </div>
+      </div>
+
+      {/* Brand Colors Section */}
+      <div className="border-t pt-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Brand Colors</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="primaryColor" className="block text-sm font-medium text-gray-700 mb-2">
+              Primary Color
+            </label>
+            <div className="flex items-center space-x-3">
+              <input
+                id="primaryColor"
+                name="primaryColor"
+                type="color"
+                value={primaryColor}
+                onChange={(e) => setPrimaryColor(e.target.value)}
+                className="h-10 w-20 rounded-lg border border-gray-300 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={primaryColor}
+                onChange={(e) => setPrimaryColor(e.target.value)}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="#4F46E5"
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Used for buttons, links, and primary accents</p>
+          </div>
+
+          <div>
+            <label htmlFor="secondaryColor" className="block text-sm font-medium text-gray-700 mb-2">
+              Secondary Color
+            </label>
+            <div className="flex items-center space-x-3">
+              <input
+                id="secondaryColor"
+                name="secondaryColor"
+                type="color"
+                value={secondaryColor}
+                onChange={(e) => setSecondaryColor(e.target.value)}
+                className="h-10 w-20 rounded-lg border border-gray-300 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={secondaryColor}
+                onChange={(e) => setSecondaryColor(e.target.value)}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="#7C3AED"
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-1">Used for gradients and secondary accents</p>
+          </div>
+        </div>
+
+        {/* Color Preview */}
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          <h4 className="text-sm font-medium text-gray-700 mb-3">Preview</h4>
+          <div className="flex items-center space-x-4">
+            <button
+              type="button"
+              style={{ backgroundColor: primaryColor }}
+              className="px-4 py-2 text-white font-medium rounded-lg shadow-sm"
+            >
+              Primary Button
+            </button>
+            <button
+              type="button"
+              style={{
+                background: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
+              }}
+              className="px-4 py-2 text-white font-medium rounded-lg shadow-sm"
+            >
+              Gradient Button
+            </button>
+            <div style={{ backgroundColor: secondaryColor }} className="w-8 h-8 rounded-full"></div>
+          </div>
         </div>
       </div>
 

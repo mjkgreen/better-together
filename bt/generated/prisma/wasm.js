@@ -142,6 +142,8 @@ exports.Prisma.EventScalarFieldEnum = {
   logoUrl: 'logoUrl',
   bannerUrl: 'bannerUrl',
   socialLinks: 'socialLinks',
+  primaryColor: 'primaryColor',
+  secondaryColor: 'secondaryColor',
   organizerId: 'organizerId'
 };
 

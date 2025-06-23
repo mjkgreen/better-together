@@ -2290,6 +2290,8 @@ export namespace Prisma {
     eventDetails: string | null
     logoUrl: string | null
     bannerUrl: string | null
+    primaryColor: string | null
+    secondaryColor: string | null
     organizerId: string | null
   }
 
@@ -2302,6 +2304,8 @@ export namespace Prisma {
     eventDetails: string | null
     logoUrl: string | null
     bannerUrl: string | null
+    primaryColor: string | null
+    secondaryColor: string | null
     organizerId: string | null
   }
 
@@ -2315,6 +2319,8 @@ export namespace Prisma {
     logoUrl: number
     bannerUrl: number
     socialLinks: number
+    primaryColor: number
+    secondaryColor: number
     organizerId: number
     _all: number
   }
@@ -2329,6 +2335,8 @@ export namespace Prisma {
     eventDetails?: true
     logoUrl?: true
     bannerUrl?: true
+    primaryColor?: true
+    secondaryColor?: true
     organizerId?: true
   }
 
@@ -2341,6 +2349,8 @@ export namespace Prisma {
     eventDetails?: true
     logoUrl?: true
     bannerUrl?: true
+    primaryColor?: true
+    secondaryColor?: true
     organizerId?: true
   }
 
@@ -2354,6 +2364,8 @@ export namespace Prisma {
     logoUrl?: true
     bannerUrl?: true
     socialLinks?: true
+    primaryColor?: true
+    secondaryColor?: true
     organizerId?: true
     _all?: true
   }
@@ -2440,6 +2452,8 @@ export namespace Prisma {
     logoUrl: string | null
     bannerUrl: string | null
     socialLinks: JsonValue | null
+    primaryColor: string | null
+    secondaryColor: string | null
     organizerId: string
     _count: EventCountAggregateOutputType | null
     _min: EventMinAggregateOutputType | null
@@ -2470,6 +2484,8 @@ export namespace Prisma {
     logoUrl?: boolean
     bannerUrl?: boolean
     socialLinks?: boolean
+    primaryColor?: boolean
+    secondaryColor?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     attendees?: boolean | Event$attendeesArgs<ExtArgs>
@@ -2486,6 +2502,8 @@ export namespace Prisma {
     logoUrl?: boolean
     bannerUrl?: boolean
     socialLinks?: boolean
+    primaryColor?: boolean
+    secondaryColor?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
@@ -2500,6 +2518,8 @@ export namespace Prisma {
     logoUrl?: boolean
     bannerUrl?: boolean
     socialLinks?: boolean
+    primaryColor?: boolean
+    secondaryColor?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
@@ -2514,10 +2534,12 @@ export namespace Prisma {
     logoUrl?: boolean
     bannerUrl?: boolean
     socialLinks?: boolean
+    primaryColor?: boolean
+    secondaryColor?: boolean
     organizerId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "createdAt" | "updatedAt" | "eventDetails" | "logoUrl" | "bannerUrl" | "socialLinks" | "organizerId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "createdAt" | "updatedAt" | "eventDetails" | "logoUrl" | "bannerUrl" | "socialLinks" | "primaryColor" | "secondaryColor" | "organizerId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     attendees?: boolean | Event$attendeesArgs<ExtArgs>
@@ -2546,6 +2568,8 @@ export namespace Prisma {
       logoUrl: string | null
       bannerUrl: string | null
       socialLinks: Prisma.JsonValue | null
+      primaryColor: string | null
+      secondaryColor: string | null
       organizerId: string
     }, ExtArgs["result"]["event"]>
     composites: {}
@@ -2981,6 +3005,8 @@ export namespace Prisma {
     readonly logoUrl: FieldRef<"Event", 'String'>
     readonly bannerUrl: FieldRef<"Event", 'String'>
     readonly socialLinks: FieldRef<"Event", 'Json'>
+    readonly primaryColor: FieldRef<"Event", 'String'>
+    readonly secondaryColor: FieldRef<"Event", 'String'>
     readonly organizerId: FieldRef<"Event", 'String'>
   }
     
@@ -4538,6 +4564,8 @@ export namespace Prisma {
     logoUrl: 'logoUrl',
     bannerUrl: 'bannerUrl',
     socialLinks: 'socialLinks',
+    primaryColor: 'primaryColor',
+    secondaryColor: 'secondaryColor',
     organizerId: 'organizerId'
   };
 
@@ -4752,6 +4780,8 @@ export namespace Prisma {
     logoUrl?: StringNullableFilter<"Event"> | string | null
     bannerUrl?: StringNullableFilter<"Event"> | string | null
     socialLinks?: JsonNullableFilter<"Event">
+    primaryColor?: StringNullableFilter<"Event"> | string | null
+    secondaryColor?: StringNullableFilter<"Event"> | string | null
     organizerId?: StringFilter<"Event"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     attendees?: EventAttendeeListRelationFilter
@@ -4767,6 +4797,8 @@ export namespace Prisma {
     logoUrl?: SortOrderInput | SortOrder
     bannerUrl?: SortOrderInput | SortOrder
     socialLinks?: SortOrderInput | SortOrder
+    primaryColor?: SortOrderInput | SortOrder
+    secondaryColor?: SortOrderInput | SortOrder
     organizerId?: SortOrder
     organizer?: UserOrderByWithRelationInput
     attendees?: EventAttendeeOrderByRelationAggregateInput
@@ -4785,6 +4817,8 @@ export namespace Prisma {
     logoUrl?: StringNullableFilter<"Event"> | string | null
     bannerUrl?: StringNullableFilter<"Event"> | string | null
     socialLinks?: JsonNullableFilter<"Event">
+    primaryColor?: StringNullableFilter<"Event"> | string | null
+    secondaryColor?: StringNullableFilter<"Event"> | string | null
     organizerId?: StringFilter<"Event"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     attendees?: EventAttendeeListRelationFilter
@@ -4800,6 +4834,8 @@ export namespace Prisma {
     logoUrl?: SortOrderInput | SortOrder
     bannerUrl?: SortOrderInput | SortOrder
     socialLinks?: SortOrderInput | SortOrder
+    primaryColor?: SortOrderInput | SortOrder
+    secondaryColor?: SortOrderInput | SortOrder
     organizerId?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -4819,6 +4855,8 @@ export namespace Prisma {
     logoUrl?: StringNullableWithAggregatesFilter<"Event"> | string | null
     bannerUrl?: StringNullableWithAggregatesFilter<"Event"> | string | null
     socialLinks?: JsonNullableWithAggregatesFilter<"Event">
+    primaryColor?: StringNullableWithAggregatesFilter<"Event"> | string | null
+    secondaryColor?: StringNullableWithAggregatesFilter<"Event"> | string | null
     organizerId?: StringWithAggregatesFilter<"Event"> | string
   }
 
@@ -4988,6 +5026,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
     organizer: UserCreateNestedOneWithoutOrganizedEventsInput
     attendees?: EventAttendeeCreateNestedManyWithoutEventInput
   }
@@ -5002,6 +5042,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
     organizerId: string
     attendees?: EventAttendeeUncheckedCreateNestedManyWithoutEventInput
   }
@@ -5016,6 +5058,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     organizer?: UserUpdateOneRequiredWithoutOrganizedEventsNestedInput
     attendees?: EventAttendeeUpdateManyWithoutEventNestedInput
   }
@@ -5030,6 +5074,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: StringFieldUpdateOperationsInput | string
     attendees?: EventAttendeeUncheckedUpdateManyWithoutEventNestedInput
   }
@@ -5044,6 +5090,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
     organizerId: string
   }
 
@@ -5057,6 +5105,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -5069,6 +5119,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -5323,6 +5375,8 @@ export namespace Prisma {
     logoUrl?: SortOrder
     bannerUrl?: SortOrder
     socialLinks?: SortOrder
+    primaryColor?: SortOrder
+    secondaryColor?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -5335,6 +5389,8 @@ export namespace Prisma {
     eventDetails?: SortOrder
     logoUrl?: SortOrder
     bannerUrl?: SortOrder
+    primaryColor?: SortOrder
+    secondaryColor?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -5347,6 +5403,8 @@ export namespace Prisma {
     eventDetails?: SortOrder
     logoUrl?: SortOrder
     bannerUrl?: SortOrder
+    primaryColor?: SortOrder
+    secondaryColor?: SortOrder
     organizerId?: SortOrder
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
@@ -5735,6 +5793,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
     attendees?: EventAttendeeCreateNestedManyWithoutEventInput
   }
 
@@ -5748,6 +5808,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
     attendees?: EventAttendeeUncheckedCreateNestedManyWithoutEventInput
   }
 
@@ -5816,6 +5878,8 @@ export namespace Prisma {
     logoUrl?: StringNullableFilter<"Event"> | string | null
     bannerUrl?: StringNullableFilter<"Event"> | string | null
     socialLinks?: JsonNullableFilter<"Event">
+    primaryColor?: StringNullableFilter<"Event"> | string | null
+    secondaryColor?: StringNullableFilter<"Event"> | string | null
     organizerId?: StringFilter<"Event"> | string
   }
 
@@ -5998,6 +6062,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
     organizer: UserCreateNestedOneWithoutOrganizedEventsInput
   }
 
@@ -6011,6 +6077,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
     organizerId: string
   }
 
@@ -6077,6 +6145,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     organizer?: UserUpdateOneRequiredWithoutOrganizedEventsNestedInput
   }
 
@@ -6090,6 +6160,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -6103,6 +6175,8 @@ export namespace Prisma {
     logoUrl?: string | null
     bannerUrl?: string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: string | null
+    secondaryColor?: string | null
   }
 
   export type EventAttendeeCreateManyUserInput = {
@@ -6123,6 +6197,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: EventAttendeeUpdateManyWithoutEventNestedInput
   }
 
@@ -6136,6 +6212,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
     attendees?: EventAttendeeUncheckedUpdateManyWithoutEventNestedInput
   }
 
@@ -6149,6 +6227,8 @@ export namespace Prisma {
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     bannerUrl?: NullableStringFieldUpdateOperationsInput | string | null
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    primaryColor?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryColor?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EventAttendeeUpdateWithoutUserInput = {

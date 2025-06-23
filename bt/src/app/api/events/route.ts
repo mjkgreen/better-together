@@ -11,6 +11,8 @@ export async function POST(req: NextRequest) {
             logoUrl,
             bannerUrl,
             socialLinks,
+            primaryColor,
+            secondaryColor,
             organizerId
         } = body;
 
@@ -26,6 +28,8 @@ export async function POST(req: NextRequest) {
                 logoUrl,
                 bannerUrl,
                 socialLinks,
+                primaryColor,
+                secondaryColor,
                 organizer: {
                     connect: {
                         id: organizerId,
