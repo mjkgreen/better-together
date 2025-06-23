@@ -36,20 +36,24 @@ export async function POST(req: NextRequest) {
         const userCompany = userAttendee.user.company || '';
 
         // Generate the intro email using AI
-        const systemPrompt = `You are writing a brief, friendly intro email for someone who wants to connect with another attendee at an event. The email should be:
-    - Very short (2-3 sentences max)
-    - Warm and professional
-    - Mention why they should connect
-    - Include a specific call to action (like "coffee chat" or "quick call")
-    - Be personable but not overly casual
-    
-    Do NOT include email formatting like subject lines, "Dear" or "Sincerely" - just the body text.`;
+        const systemPrompt = `You are an expert at writing professional networking emails. Your task is to craft a concise and compelling introductory email from one event attendee to another, proposing a meeting during the event (note that the event is in the future).
 
-        const prompt = `Write a short intro email from ${userName}${userRole ? ` (${userRole}${userCompany ? ` at ${userCompany}` : ''})` : ''} to ${matchName}${matchRole ? ` (${matchRole}${matchCompany ? ` at ${matchCompany}` : ''})` : ''} at the "${event.name}" event. 
+The email's tone should be:
+- Professional and respectful.
+- Enthusiastic but not overly familiar.
+- Action-oriented and concise (maximum 3-4 sentences).
 
-    Context for why they should connect: ${reason}
+The email's structure must contain:
+1. Hi [Match Name],
+2. A brief, friendly opening that mentions the event context.
+3. A clear statement on why they are reaching out, based on the provided reason.
+4. A specific, low-commitment call to action (e.g., "a brief 15-minute chat," "connecting for coffee") during the event.
+5. IMPORTANT: add the actual name of the person at the end of the email.
+`;
 
-    The email should be friendly and suggest a specific way to connect (coffee, call, etc.).`;
+        const prompt = `Write a short intro email from ${userName}${userRole ? ` (${userRole}${userCompany ? ` at ${userCompany}` : ''})` : ''} to ${matchName}${matchRole ? ` (${matchRole}${matchCompany ? ` at ${matchCompany}` : ''})` : ''} at the "${event.name}" event.
+
+The reason they should connect is: ${reason}`;
 
         const { text } = await generateText({
             model: openai('gpt-4-turbo'),
@@ -59,7 +63,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Create subject line
-        const subject = `Great meeting you at ${event.name}!`;
+        const subject = `Meeting up at ${event.name}`;
 
         // Create mailto link
         const emailBody = encodeURIComponent(text.trim());
