@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma';
 const prisma = new PrismaClient();
 
 async function main() {
@@ -6,7 +6,7 @@ async function main() {
 
     // Clear existing data
     await prisma.eventAttendee.deleteMany({});
-    await prisma.contact.deleteMany({});
+    // await prisma.contact.deleteMany({});
     await prisma.user.deleteMany({});
     await prisma.event.deleteMany({});
     console.log('Cleared previous data.');

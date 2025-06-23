@@ -32,7 +32,7 @@ model User {
   attending EventAttendee[]
 
   // The contacts this user has saved to their "rolodex".
-  contacts Contact[]
+  // contacts Contact[]
 }
 
 // Represents an event that people can attend.
@@ -66,7 +66,7 @@ model EventAttendee {
 
 // A contact in a user's personal "rolodex".
 // This is created when a user wants to save a person they've met or been matched with.
-model Contact {
+/* model Contact {
   id        String   @id @default(cuid())
   
   // The user who owns this contact entry.
@@ -99,4 +99,4 @@ model FollowUp {
   generatedMessage String
   status           String   @default("draft") // e.g., "draft", "sent"
   createdAt        DateTime @default(now())
-} 
+}  */ 

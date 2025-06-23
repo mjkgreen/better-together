@@ -150,24 +150,6 @@ exports.Prisma.EventAttendeeScalarFieldEnum = {
   keywords: 'keywords'
 };
 
-exports.Prisma.ContactScalarFieldEnum = {
-  id: 'id',
-  ownerId: 'ownerId',
-  contactInfoJson: 'contactInfoJson',
-  eventId: 'eventId',
-  notes: 'notes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.FollowUpScalarFieldEnum = {
-  id: 'id',
-  contactId: 'contactId',
-  generatedMessage: 'generatedMessage',
-  status: 'status',
-  createdAt: 'createdAt'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -187,9 +169,7 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   User: 'User',
   Event: 'Event',
-  EventAttendee: 'EventAttendee',
-  Contact: 'Contact',
-  FollowUp: 'FollowUp'
+  EventAttendee: 'EventAttendee'
 };
 
 /**
