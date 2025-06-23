@@ -10,12 +10,45 @@ So instead of two disjointed tools (before-event networking and post-event follo
 
 ## ✅ MVP Scope (Buildable in 12 Hours)
 
-### 🧠 Core Flow:
-1.  **User logs in with Google (or mock login)**
-2.  **User enters what they're looking for** (e.g. "I want to meet AI startup founders")
-3.  **Agent recommends 2-5 people to meet, with reasons** (e.g. "You and Jane are both building B2B tools for healthcare")
-4.  **After event, user types notes about their conversations** (or selects from a template)
-5.  **Agent drafts personalized follow-up messages, ready to send**
+### 🧠 MVP System Flow (Cleaned Up)
+1.  **Event Sign-Up Form**
+    -   Basic form to capture:
+        -   Name
+        -   Email (optional)
+        -   Role / Job Title
+        -   Company
+        -   Interests / Goals for the event (freeform or dropdown)
+2.  **AI-Powered Contact Match Engine**
+    -   Input: user's form + mock attendee list (with similar fields)
+    -   Agent uses embeddings or prompt engineering to match top 3–5 relevant people to user
+3.  **Output Matches**
+    -   Display:
+        -   Names, brief context (why they were picked)
+        -   Optional: CTA buttons like "Introduce me", "View profile", "Save contact"
+    -   e.g., "You and Sarah are both working on climate tech startups. You should talk to her about funding strategies."
+4.  **Save in Rolodex**
+    -   "Add to my list" button stores matched contacts locally (can be JSON, localStorage or mock DB)
+    -   Later used for follow-up
+5.  **Post-Event: Follow-Up AI Agent**
+    -   User selects a contact + writes 1–2 lines about what was discussed (or selects a template)
+    -   Agent generates a follow-up message (email, Slack DM, or LinkedIn style)
+    -   e.g., "Hi Sarah — great chatting about carbon credits at TechTO! Would love to continue the convo over coffee next week."
+
+### 🔁 Stretch:
+-   Option to let both people contact each other (e.g. if both are using app)
+-   "Mutual interest" flag
+-   Schedule time via Google Calendar integration
+
+### ⏱️ 12-Hour Build Feasibility
+| Component                      | Time Est. | Tool                       |
+| ------------------------------ | --------- | -------------------------- |
+| Signup form                    | 1 hr      | React                      |
+| Mock attendee data             | 30 min    | JSON                       |
+| AI match logic (prompt-based)  | 2 hrs     | OpenAI API / LangChain     |
+| Match display UI               | 1 hr      | Tailwind + React           |
+| Rolodex save (localStorage)    | 1 hr      | React                      |
+| Follow-up agent (notes → draft)| 2 hrs     | OpenAI API                 |
+| Demo polish & deploy           | 3 hrs     | Vercel or Netlify          |
 
 ### 💻 Tech Stack
 -   **Frontend:** Next.js (super fast for hackathon)
