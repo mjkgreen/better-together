@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// 1. Set up your data source.
+// For the MVP, we can use SQLite for simplicity, but I'll set it up for PostgreSQL
+// as it's more scalable. We can easily switch it later.
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 2. Define your data models.
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-1.1.x", "debian-openssl-3.0.x"]
+}
+// Represents a user of the application. This can be a person signing up
+// to get matches or a mock user from an attendee list.
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  linkedinUrl String?
+  name      String?
+  role      String?
+  company   String?
+  city      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // The events this user is attending.
+  attending EventAttendee[]
+
+  // The contacts this user has saved to their "rolodex".
+  contacts Contact[]
+}
+
+// Represents an event that people can attend.
+model Event {
+  id        String   @id @default(cuid())
+  name      String
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  eventDetails String?
+
+  // A list of all attendees for this event.
+  attendees EventAttendee[]
+}
+
+// This model links a User to an Event, indicating they are an attendee.
+// It also stores their specific goals for that event.
+model EventAttendee {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   String
+  goals     String? // "What are you hoping to get out of this event? and who are you looking to meet?"
+  priority String? // "High", "Medium", "Low"
+  keywords String? // "AI", "Climate Tech", "Startup"
+
+  // This ensures a user can only attend a specific event once.
+  @@unique([userId, eventId])
+}
+
+// A contact in a user's personal "rolodex".
+// This is created when a user wants to save a person they've met or been matched with.
+model Contact {
+  id        String   @id @default(cuid())
+  
+  // The user who owns this contact entry.
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   String
+
+  // The person who is the contact. For the MVP, we can store their info as a JSON
+  // object to keep it simple, as they might not be a `User` in our system yet.
+  // Example: { "name": "Sarah", "role": "CEO", "company": "Climate Corp" }
+  contactInfoJson String
+
+  // The event where they met.
+  eventId   String
+
+  // User's private notes on the conversation.
+  notes     String?
+
+  // AI-generated follow-up messages for this contact.
+  followUps FollowUp[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// An AI-generated follow-up message for a specific contact.
+model FollowUp {
+  id               String   @id @default(cuid())
+  contact          Contact  @relation(fields: [contactId], references: [id])
+  contactId        String
+  generatedMessage String
+  status           String   @default("draft") // e.g., "draft", "sent"
+  createdAt        DateTime @default(now())
+} 
